@@ -3,13 +3,13 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
-/group9/[Ll]ibrary/
-/group9/[Tt]emp/
-/group9/[Oo]bj/
-/group9/[Bb]uild/
-/group9/[Bb]uilds/
-/group9/[Ll]ogs/
-/group9/[Uu]ser[Ss]ettings/
+/group9/[Ll]ibrary
+/group9/[Tt]emp
+/group9/[Oo]bj
+/group9/[Bb]uild
+/group9/[Bb]uilds
+/group9/[Ll]ogs
+/group9/[Uu]ser[Ss]ettings
 *.log
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
@@ -18,10 +18,10 @@
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
-/group9/[Mm]emoryCaptures/
+/group9/[Mm]emoryCaptures
 
 # Recordings can get excessive in size
-/group9/[Rr]ecordings/
+/group9/[Rr]ecordings
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
