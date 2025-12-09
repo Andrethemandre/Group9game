@@ -33,10 +33,9 @@ public class Fairy : MonoBehaviour
     {
         uiImage = GetComponent<Image>();
         rectTransform = GetComponent<RectTransform>();
-
         originalPos = rectTransform.anchoredPosition;
 
-        if (dialogPanel != null) dialogPanel.SetActive(false);
+        // if(dialogPanel != null) dialogPanel.SetActive(false);
 
 
     }
