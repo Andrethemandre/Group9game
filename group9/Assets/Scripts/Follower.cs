@@ -38,6 +38,9 @@ public class Follower : MonoBehaviour
     public GameObject hitParticlePrefab; 
     public GameObject missParticlePrefab;
     //
+    public GameManager gameManager;
+
+    private int totalNotes = 0;
 
     void Start()
     {
@@ -60,9 +63,15 @@ public class Follower : MonoBehaviour
 		startPosition = transform.position;
 		endPosition = transform.position;
 		Move();
-	}
 
-	void NextSongCharacter()
+        // Calculate total notes for scoring
+        foreach (char c in song1)
+        {
+            if (c == '1') totalNotes++;
+        }
+    }
+
+    void NextSongCharacter()
 	{
 		nextBeatChar = song1.Substring(0, 1);
 		song1 = song1.Substring(1, song1.Length - 1);
@@ -209,5 +218,22 @@ public class Follower : MonoBehaviour
 		transform.position = endPosition;
 		isMoving = false;
         stickerIsDone = true;
+
+        if (gameManager != null)
+        {
+            // calculate accuracy
+            float accuracy = 0f;
+            if (totalNotes > 0) accuracy = points / (float)totalNotes;
+
+            gameManager.Invoke("OnGameFinished", 1.0f); 
+
+            StartCoroutine(CallGameFinish(accuracy));
+        }
+    }
+
+    System.Collections.IEnumerator CallGameFinish(float acc)
+    {
+        yield return new WaitForSeconds(1.0f); 
+        gameManager.OnGameFinished(acc);
     }
 }
