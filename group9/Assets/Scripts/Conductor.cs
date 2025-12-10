@@ -15,9 +15,9 @@ public class Conductor : MonoBehaviour
 	{
 		musicSource = GetComponent<AudioSource>();
 		beatDuration = 60f / bpm;
-		musicStartedTime = (float)AudioSettings.dspTime;
+		//musicStartedTime = (float)AudioSettings.dspTime;
 
-		musicSource.Play();
+		//musicSource.Play();
 	}
 
 	void Update()
@@ -25,4 +25,10 @@ public class Conductor : MonoBehaviour
 		currentPosition = (float)(AudioSettings.dspTime - musicStartedTime - offset);
 		currentPositionInBeats = currentPosition / beatDuration;
 	}
+
+    public void PlaySong()
+    {
+        musicStartedTime = (float)AudioSettings.dspTime; 
+        musicSource.Play();
+    }
 }

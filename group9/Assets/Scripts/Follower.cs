@@ -32,6 +32,13 @@ public class Follower : MonoBehaviour
 	public Timer hitLabelTimer;
 	public AudioSource hitSound;
 
+    //
+    [Header("--- Visual Effects & fairy ---")]
+    public Fairy fairy;
+    public GameObject hitParticlePrefab; 
+    public GameObject missParticlePrefab;
+    //
+
     void Start()
     {
 		hitLabel = GameObject.Find("HitLabel").GetComponent<TextMeshPro>();
@@ -149,6 +156,16 @@ public class Follower : MonoBehaviour
 		msLabel.enabled = true;
 		hitLabel.enabled = true;
 		hitLabelTimer.StartTimer();
+		//
+        if (fairy != null)
+        {
+            fairy.OnPerfectHit();
+        }
+
+        if (hitParticlePrefab != null)
+        {
+            Instantiate(hitParticlePrefab, transform.position, Quaternion.identity);
+        }
     }
 
 	void Missed(float msOff)
@@ -158,7 +175,17 @@ public class Follower : MonoBehaviour
 		msLabel.enabled = true;
 		hitLabel.enabled = true;
 		hitLabelTimer.StartTimer();
-	}
+        //
+        if (fairy != null)
+        {
+            fairy.OnMiss();
+        }
+
+        if (missParticlePrefab != null)
+        {
+            Instantiate(missParticlePrefab, transform.position, Quaternion.identity);
+        }
+    }
 
 	void Move()
 	{
