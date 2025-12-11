@@ -2,6 +2,8 @@ using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class Follower : MonoBehaviour
 {
@@ -29,8 +31,16 @@ public class Follower : MonoBehaviour
 	public Conductor conductor;
 	public TextMeshPro hitLabel;
 	public TextMeshPro msLabel;
+	public TextMeshPro nowLabel;
+	public TextMeshPro playerNowLabel;
 	public Timer hitLabelTimer;
-	public AudioSource hitSound;
+	public Timer nowLabelTimer;
+	public Timer playerNowLabelTimer;
+
+	InputAction hitAction;
+
+	[Header("--- Audio ---")]
+	[SerializeField] EventReference hitEvent;
 
     //
     [Header("--- Visual Effects & fairy ---")]
@@ -42,16 +52,29 @@ public class Follower : MonoBehaviour
 
     private int totalNotes = 0;
 
+	void PlayHitSound()
+    {
+        RuntimeManager.PlayOneShot(hitEvent);
+    }
+
     void Start()
     {
-		hitLabel = GameObject.Find("HitLabel").GetComponent<TextMeshPro>();
-		msLabel = GameObject.Find("MsLabel").GetComponent<TextMeshPro>();
-		hitLabelTimer = GameObject.Find("HitLabelTimer").GetComponent<Timer>();
-		hitSound = GameObject.Find("HitSound").GetComponent<AudioSource>();
+		// hitLabel = GameObject.Find("HitLabel").GetComponent<TextMeshPro>();
+		// msLabel = GameObject.Find("MsLabel").GetComponent<TextMeshPro>();
+		// nowLabel = GameObject.Find("NowLabel").GetComponent<TextMeshPro>();
+		// hitLabelTimer = GameObject.Find("HitLabelTimer").GetComponent<Timer>();
+		// nowLabelTimer = GameObject.Find("NowLabelTimer").GetComponent<Timer>();
+		// hitSound = GameObject.Find("HitSound").GetComponent<AudioSource>();
+
+		hitAction = InputSystem.actions.FindAction("Hit");
 
 		hitLabel.enabled = false;
 		msLabel.enabled = false;
+		nowLabel.enabled = false;
+		playerNowLabel.enabled = false;
 		hitLabelTimer.onTimerComplete = () => { hitLabel.enabled = false; msLabel.enabled = false; };
+		nowLabelTimer.onTimerComplete = () => { nowLabel.enabled = false; };
+		playerNowLabelTimer.onTimerComplete = () => { playerNowLabel.enabled = false; };
 
 		widthDuration = (float)widthInBeats * conductor.beatDuration;
 		nextBeatChar = GetNextSongCharacter();
@@ -86,7 +109,7 @@ public class Follower : MonoBehaviour
         }
 		else if (c == "!" || c == ">" || c == ";")
 		{
-			c = song1.Substring(1, 2);
+			c = song1.Substring(1, 1);
 		}
 		return c;
 	}
@@ -94,6 +117,8 @@ public class Follower : MonoBehaviour
     void Update()
 	{
 		if (stickerIsDone) return;
+
+		if (conductor.currentPosition < 0f) return;
 
 		if (conductor.currentPositionInBeats >= nextBeat)
 		{
@@ -120,14 +145,23 @@ public class Follower : MonoBehaviour
 			isNextBeatActive = int.Parse(GetNextSongCharacter()) == 1 ? true : false;
 			nextBeat += 0.5f;
 			Move();
+			// PlayHitSound();
+
+			if (isBeatActive)
+            {
+                nowLabel.enabled = true;
+				nowLabelTimer.StartTimer();
+            }
 		}
 
 		if (!isMoving) return;
 		transform.position = Vector3.Lerp(startPosition, endPosition, Mathf.Pow(conductor.currentPositionInBeats % 0.5f / 0.5f, 3f));
 
-		if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z) || Input.GetMouseButtonDown(0))
+		if (hitAction.WasPressedThisDynamicUpdate())
 		{
-			hitSound.Play();
+			PlayHitSound();
+			playerNowLabel.enabled = true;
+			playerNowLabelTimer.StartTimer();
 
 			float timeSinceLastBeat = conductor.currentPositionInBeats % 0.5f;
 			float timeToNextBeat = 0.5f - timeSinceLastBeat;
@@ -142,6 +176,7 @@ public class Follower : MonoBehaviour
                 {
                     Missed(timeSinceLastBeat);
                 }
+				isBeatActive = false;
 			}
 			else if (timeToNextBeat <= hitMissMargin && isNextBeatActive)
 			{
@@ -153,6 +188,7 @@ public class Follower : MonoBehaviour
                 {
                     Missed(-timeToNextBeat);
                 }
+				isNextBeatActive = false;
 			}
 		}
 	}
