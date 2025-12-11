@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public Conductor conductor;           
     public Follower follower;          
     public Fairy fairy;       
-
+    
     [Header("--- dialogue ---")]
     public GameObject dialogPanel;
     public TextMeshProUGUI dialogText;
