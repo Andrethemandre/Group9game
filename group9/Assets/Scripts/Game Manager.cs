@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -26,10 +27,14 @@ public class GameManager : MonoBehaviour
     private int currentLineIndex = 0;
     private bool hasGameStarted = false;
 
+    InputAction clickAction;
+
     void Start()
     {
         hasGameStarted = false;
         currentLineIndex = 0;
+
+        clickAction = InputSystem.actions.FindAction("Hit");
 
         if (conductor != null) conductor.enabled = false;
         if (follower != null) follower.enabled = false;
@@ -45,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         if (!hasGameStarted && introDialogPanel != null && introDialogPanel.activeSelf)
         {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Z))
+            if (clickAction.WasPerformedThisDynamicUpdate())
             {
                 OnIntroClicked();
             }
