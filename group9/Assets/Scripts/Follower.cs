@@ -225,7 +225,7 @@ public class Follower : MonoBehaviour
             float accuracy = 0f;
             if (totalNotes > 0) accuracy = points / (float)totalNotes;
 
-            gameManager.Invoke("OnGameFinished", 1.0f); 
+            gameManager.Invoke("OnGameFinished", 2.0f); 
 
             StartCoroutine(CallGameFinish(accuracy));
         }
@@ -233,7 +233,7 @@ public class Follower : MonoBehaviour
 
     System.Collections.IEnumerator CallGameFinish(float acc)
     {
-        yield return new WaitForSeconds(1.0f); 
+        yield return new WaitForSeconds(2.0f); 
         gameManager.OnGameFinished(acc);
     }
 }
