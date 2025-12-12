@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\GitHub\\Group9game\\group9\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2416EC0B-ED0C-34ED-E1DD-541B28607D7E}|Assembly-CSharp.csproj|d:\\github\\group9game\\group9\\assets\\scripts\\main menu script.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2416EC0B-ED0C-34ED-E1DD-541B28607D7E}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\main menu script.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2416EC0B-ED0C-34ED-E1DD-541B28607D7E}|Assembly-CSharp.csproj|d:\\github\\group9game\\group9\\assets\\scripts\\game manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2416EC0B-ED0C-34ED-E1DD-541B28607D7E}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\game manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -31,14 +35,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Game Manager.cs",
-              "DocumentMoniker": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Game Manager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Game Manager.cs",
-              "ToolTip": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Game Manager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Game Manager.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAADwvzEAAAAAAAAAAAAAAA==",
+              "Title": "Main menu script.cs",
+              "DocumentMoniker": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Main menu script.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Main menu script.cs",
+              "ToolTip": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Main menu script.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Main menu script.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAAwEAAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-10T21:28:24.547Z",
+              "WhenOpened": "2025-12-12T19:55:13.114Z",
               "EditorCaption": ""
             },
             {
@@ -52,6 +56,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Game Manager.cs",
+              "DocumentMoniker": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Game Manager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Game Manager.cs",
+              "ToolTip": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Game Manager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Game Manager.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAADwvzEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-10T21:28:24.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Follower.cs",
               "DocumentMoniker": "D:\\GitHub\\Group9game\\group9\\Assets\\Scripts\\Follower.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Follower.cs",
@@ -59,12 +76,11 @@
               "RelativeToolTip": "Assets\\Scripts\\Follower.cs",
               "ViewState": "AgIAAFgAAAAAAAAAAAAvwF0AAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-09T15:23:29.547Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-09T15:23:29.547Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Fairy.cs",
               "DocumentMoniker": "D:\\GitHub\\Group9game\\group9\\Assets\\Fairy.cs",
               "RelativeDocumentMoniker": "Assets\\Fairy.cs",
