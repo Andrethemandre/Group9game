@@ -41,7 +41,8 @@ public class CameraController : MonoBehaviour
     {
         if (!isMoving && introTarget != null)
         {
-            StartCoroutine(TransitionRoutine(introTarget, onComplete));
+            // StartCoroutine(TransitionRoutine(introTarget, onComplete));
+            transform.position = introTarget.position;
         }
     }
 

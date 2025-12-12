@@ -4,14 +4,16 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using FMODUnity;
+using FMOD.Studio;
 
 public class Follower : MonoBehaviour
 {
     public string song1 = "00000000>0000011100011100;1010010100100010;1110010101010100;0011011101100010;0000100101010010;1010011100101000;0001000110110001;0111100011110001!";
+    public string longSong1 = "00000000>0000011100011100;1010010100100010;1110010101010100;0011011101100010;0000100101010010;1010011100101000;0001000110110001;0111100011110001;0000011100011100;1010010100100010;1110010101010100;0011011101100010;0000100101010010;1010011100101000;0001000110110001;0111100011110001!";
 
     public int widthInBeats = 8;
     public int heightInBeats = 4;
-	public float widthDuration = 0f;
+	public double widthDuration = 0f;
 	public float nextBeat = 0.5f;
 	public string nextBeatChar;
 	public bool isBeatActive = false;
@@ -36,11 +38,14 @@ public class Follower : MonoBehaviour
 	public Timer hitLabelTimer;
 	public Timer nowLabelTimer;
 	public Timer playerNowLabelTimer;
+	public DebugTimingGauge debugTimingGauge;
 
-	InputAction hitAction;
+	InputAction hitAction1;
+	InputAction hitAction2;
 
 	[Header("--- Audio ---")]
 	[SerializeField] EventReference hitEvent;
+	EventInstance hitInstance;
 
     //
     [Header("--- Visual Effects & fairy ---")]
@@ -54,11 +59,26 @@ public class Follower : MonoBehaviour
 
 	void PlayHitSound()
     {
+		// hitInstance.getPaused(out bool isPaused);
+		// if (isPaused)
+		// {
+		// 	hitInstance.setPaused(false);
+		// } else
+		// {
+		// 	// hitInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+		// 	hitInstance.start();
+		// }
         RuntimeManager.PlayOneShot(hitEvent);
     }
 
     void Start()
     {
+		// song1 = longSong1;
+
+		// hitInstance = RuntimeManager.CreateInstance(hitEvent);
+		// hitInstance.start();
+		// hitInstance.setPaused(true);
+
 		// hitLabel = GameObject.Find("HitLabel").GetComponent<TextMeshPro>();
 		// msLabel = GameObject.Find("MsLabel").GetComponent<TextMeshPro>();
 		// nowLabel = GameObject.Find("NowLabel").GetComponent<TextMeshPro>();
@@ -66,7 +86,8 @@ public class Follower : MonoBehaviour
 		// nowLabelTimer = GameObject.Find("NowLabelTimer").GetComponent<Timer>();
 		// hitSound = GameObject.Find("HitSound").GetComponent<AudioSource>();
 
-		hitAction = InputSystem.actions.FindAction("Hit");
+		hitAction1 = InputSystem.actions.FindAction("Hit");
+		hitAction2 = InputSystem.actions.FindAction("Hit2");
 
 		hitLabel.enabled = false;
 		msLabel.enabled = false;
@@ -76,7 +97,7 @@ public class Follower : MonoBehaviour
 		nowLabelTimer.onTimerComplete = () => { nowLabel.enabled = false; };
 		playerNowLabelTimer.onTimerComplete = () => { playerNowLabel.enabled = false; };
 
-		widthDuration = (float)widthInBeats * conductor.beatDuration;
+		widthDuration = widthInBeats * conductor.beatDuration;
 		nextBeatChar = GetNextSongCharacter();
 		nextBeat = 0.5f;
 		NextSongCharacter();
@@ -145,7 +166,6 @@ public class Follower : MonoBehaviour
 			isNextBeatActive = int.Parse(GetNextSongCharacter()) == 1 ? true : false;
 			nextBeat += 0.5f;
 			Move();
-			// PlayHitSound();
 
 			if (isBeatActive)
             {
@@ -155,48 +175,53 @@ public class Follower : MonoBehaviour
 		}
 
 		if (!isMoving) return;
-		transform.position = Vector3.Lerp(startPosition, endPosition, Mathf.Pow(conductor.currentPositionInBeats % 0.5f / 0.5f, 3f));
+		transform.position = Vector3.Lerp(startPosition, endPosition, Mathf.Pow((float)conductor.currentPositionInBeats % 0.5f / 0.5f, 3f));
 
-		if (hitAction.WasPressedThisDynamicUpdate())
+		if (hitAction1.WasPerformedThisDynamicUpdate() || hitAction2.WasPerformedThisDynamicUpdate())
 		{
-			PlayHitSound();
 			playerNowLabel.enabled = true;
 			playerNowLabelTimer.StartTimer();
 
-			float timeSinceLastBeat = conductor.currentPositionInBeats % 0.5f;
-			float timeToNextBeat = 0.5f - timeSinceLastBeat;
+			double timeSinceLastBeat = conductor.currentPositionInBeats % 0.5f * conductor.beatDuration;
+			double timeToNextBeat = 0.5 * conductor.beatDuration - timeSinceLastBeat;
 
 			if (timeSinceLastBeat <= hitMissMargin && isBeatActive)
 			{
 				if (timeSinceLastBeat <= hitMargin)
                 {
-					HitSuccesful(timeSinceLastBeat);
+					HitSuccesful((float)timeSinceLastBeat);
 				}
 				else
                 {
-                    Missed(timeSinceLastBeat);
+                    Missed((float)timeSinceLastBeat);
                 }
 				isBeatActive = false;
+				debugTimingGauge.AddHitBar((float)timeSinceLastBeat);
 			}
 			else if (timeToNextBeat <= hitMissMargin && isNextBeatActive)
 			{
 				if (timeToNextBeat <= hitMargin)
                 {
-					HitSuccesful(-timeToNextBeat);
+					HitSuccesful((float)-timeToNextBeat);
                 }
 				else
                 {
-                    Missed(-timeToNextBeat);
+                    Missed((float)-timeToNextBeat);
                 }
 				isNextBeatActive = false;
+				// Debug.Log(song1[0]);
+				// song1 = "0" + song1[1..];
+				debugTimingGauge.AddHitBar((float)-timeToNextBeat);
 			}
 		}
 	}
 
 	void HitSuccesful(float msOff)
     {
+		PlayHitSound();
+
 		points += 1f;
-		msLabel.text = msOff >= 0 ? (msOff * 1000f).ToString("F0") + " ms late" : (-msOff * 1000f).ToString("F0") + " ms early";
+		msLabel.text = msOff >= 0f ? (msOff * 1000f).ToString("F0") + " ms late" : (-msOff * 1000f).ToString("F0") + " ms early";
 		hitLabel.text = "Hit!";
 		msLabel.enabled = true;
 		hitLabel.enabled = true;
@@ -215,7 +240,7 @@ public class Follower : MonoBehaviour
 
 	void Missed(float msOff)
 	{
-		msLabel.text = msOff >= 0 ? (msOff * 1000f).ToString("F0") + " ms late" : (-msOff * 1000f).ToString("F0") + " ms early";
+		msLabel.text = msOff >= 0f ? (msOff * 1000f).ToString("F0") + " ms late" : (-msOff * 1000f).ToString("F0") + " ms early";
 		hitLabel.text = "Miss!";
 		msLabel.enabled = true;
 		hitLabel.enabled = true;

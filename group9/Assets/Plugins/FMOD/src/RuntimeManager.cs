@@ -286,6 +286,7 @@ namespace FMODUnity
             currentPlatform = fmodSettings.FindCurrentPlatform();
 
             int sampleRate = currentPlatform.SampleRate;
+            // Debug.Log("Sample rate: " + sampleRate);
             int realChannels = Math.Min(currentPlatform.RealChannelCount, 256);
             int virtualChannels = currentPlatform.VirtualChannelCount;
             uint dspBufferLength = (uint)currentPlatform.DSPBufferLength;
@@ -332,6 +333,8 @@ retry:
             result = studioSystem.getCoreSystem(out coreSystem);
             CheckInitResult(result, "FMOD.Studio.System.getCoreSystem");
             
+            coreSystem.setDSPBufferSize(512, 2);
+
             // Debug.Log("Output type: " + outputType.ToString());
             result = coreSystem.setOutput(outputType);
             CheckInitResult(result, "FMOD.System.setOutput");

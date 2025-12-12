@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{22f82ac4-8efd-4fee-9715-59f7a60aa316}">
+		<property name="assetPath">
+			<value>song-1-extended.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>78.550204081632657</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{aaf2d9f2-4d50-4ebb-9f17-a37b42dc3289}</destination>
+		</relationship>
+	</object>
+</objects>
