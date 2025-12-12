@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
@@ -7,6 +8,22 @@ public class MainMenuController : MonoBehaviour
     /// Loads the main game scene. 
     /// Ensure a scene named "MainGame" exists in your Build Settings.
     /// </summary>
+    /// 
+    [Header("--- UI  ---")]
+    public GameObject optionsPanel;
+    public Slider volumeSlider;
+
+    void Start()
+    {
+        if (optionsPanel != null) optionsPanel.SetActive(false);
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = AudioListener.volume;
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        }
+    }
+
     public void PlayGame()
     {
         SceneManager.LoadScene("MainGame");
@@ -15,9 +32,15 @@ public class MainMenuController : MonoBehaviour
     /// <summary>
     /// Placeholder for Options logic.
     /// </summary>
+    /// 
     public void OpenOptions()
     {
-        Debug.Log("Options Button Clicked - Logic to be implemented later.");
+        if (optionsPanel != null) optionsPanel.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        if (optionsPanel != null) optionsPanel.SetActive(false);
     }
 
     /// <summary>
@@ -34,5 +57,10 @@ public class MainMenuController : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    public void OnVolumeChanged(float value)
+    {
+        AudioListener.volume = value;
     }
 }
